@@ -9,9 +9,9 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import tech.sosa.ingweb.application.assembler.MovieAssembler;
-import tech.sosa.ingweb.application.dto.MovieDTO;
-import tech.sosa.ingweb.application.service.ListAllMovies;
+import tech.sosa.ingweb.application.movie.assembler.MovieAssembler;
+import tech.sosa.ingweb.application.movie.dto.MovieDTO;
+import tech.sosa.ingweb.application.movie.service.ListAllMovies;
 import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 

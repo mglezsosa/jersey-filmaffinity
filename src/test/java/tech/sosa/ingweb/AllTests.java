@@ -4,12 +4,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import tech.sosa.ingweb.application.service.AddMovieTest;
-import tech.sosa.ingweb.application.service.DeleteMovieTest;
-import tech.sosa.ingweb.application.service.ListAllMoviesTest;
-import tech.sosa.ingweb.application.service.ListMovieByIdTest;
-import tech.sosa.ingweb.application.service.SearchMoviesTest;
-import tech.sosa.ingweb.application.service.UpdateMovieTest;
+import tech.sosa.ingweb.application.movie.service.AddMovieTest;
+import tech.sosa.ingweb.application.movie.service.DeleteMovieTest;
+import tech.sosa.ingweb.application.movie.service.ListAllMoviesTest;
+import tech.sosa.ingweb.application.movie.service.ListMovieByIdTest;
+import tech.sosa.ingweb.application.movie.service.SearchMoviesTest;
+import tech.sosa.ingweb.application.movie.service.UpdateMovieTest;
 
 @RunWith(Suite.class)
 @SuiteClasses({

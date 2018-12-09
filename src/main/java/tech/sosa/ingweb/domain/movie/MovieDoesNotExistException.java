@@ -1,6 +1,8 @@
 package tech.sosa.ingweb.domain.movie;
 
-public class MovieDoesNotExistException extends RuntimeException {
+import tech.sosa.ingweb.domain.shared.DoesNotExistException;
+
+public class MovieDoesNotExistException extends DoesNotExistException {
 
 	/**
 	 * 

@@ -2,9 +2,9 @@ package tech.sosa.ingweb.infrastructure.jersey;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
-import tech.sosa.ingweb.application.assembler.MovieAssembler;
+import tech.sosa.ingweb.application.movie.assembler.MovieAssembler;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
-import tech.sosa.ingweb.infrastructure.persistence.MovieRepositoryStub;
+import tech.sosa.ingweb.infrastructure.persistence.movie.MovieRepositoryStub;
 
 public class DependencyBinder extends AbstractBinder {
 
