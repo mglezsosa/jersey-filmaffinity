@@ -11,7 +11,7 @@ public class MovieAssembler implements Assembler<Movie, MovieDTO> {
 				entity.id().value(),
 				entity.title().toString(),
 				entity.genre().toString(),
-				entity.year()
+				entity.year().value()
 			);
 	}
 	

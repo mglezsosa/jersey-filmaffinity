@@ -2,8 +2,6 @@ package tech.sosa.ingweb.application.service;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,7 +23,7 @@ public class AddMovieTest {
 		AddMovieRequest request = new AddMovieRequest(
 					"Movie1",
 					"Thriller",
-					new Date(2016)
+					2016
 				);
 		
 		MovieId expectedMovieId = movieRepository.nextIdentity();

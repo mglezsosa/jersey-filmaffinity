@@ -2,8 +2,6 @@ package tech.sosa.ingweb.application.service;
 
 import static org.junit.Assert.*;
 
-import java.util.Date;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,6 +11,7 @@ import tech.sosa.ingweb.domain.movie.MovieDoesNotExistException;
 import tech.sosa.ingweb.domain.movie.MovieId;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 import tech.sosa.ingweb.domain.movie.MovieTitle;
+import tech.sosa.ingweb.domain.movie.Year;
 import tech.sosa.ingweb.infrastructure.persistence.MovieRepositoryStub;
 
 public class UpdateMovieTest {
@@ -25,7 +24,7 @@ public class UpdateMovieTest {
 					new MovieId(1L),
 					new MovieTitle("M1"),
 					new Genre("Drama"),
-					new Date(2016)
+					new Year(2016)
 				));
 	}
 	
@@ -36,7 +35,7 @@ public class UpdateMovieTest {
 					1L,
 					"Movie1",
 					"Thriller",
-					new Date(2015)
+					2015
 				);
 		
 		UpdateMovie updateMovie = new UpdateMovie(movieRepository);
@@ -46,7 +45,7 @@ public class UpdateMovieTest {
 		
 		assertEquals(new Genre("Thriller"), updatedMovie.genre());
 		assertEquals(new MovieTitle("Movie1"), updatedMovie.title());
-		assertEquals(new Date(2015), updatedMovie.year());
+		assertEquals(new Year(2015), updatedMovie.year());
 	}
 	
 	@Test(expected = MovieDoesNotExistException.class)
@@ -56,7 +55,7 @@ public class UpdateMovieTest {
 				2L,
 				"Movie1",
 				"Thriller",
-				new Date(2015)
+				2015
 			);
 		
 		UpdateMovie updateMovie = new UpdateMovie(movieRepository);

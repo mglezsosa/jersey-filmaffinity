@@ -4,6 +4,7 @@ import tech.sosa.ingweb.domain.movie.Genre;
 import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 import tech.sosa.ingweb.domain.movie.MovieTitle;
+import tech.sosa.ingweb.domain.movie.Year;
 
 public class AddMovie {
 	
@@ -18,7 +19,7 @@ public class AddMovie {
 					movieRepository.nextIdentity(),
 					new MovieTitle(request.title),
 					new Genre(request.genre),
-					request.year
+					new Year(request.year)
 				));
 	}
 }

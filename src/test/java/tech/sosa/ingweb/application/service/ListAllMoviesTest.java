@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +14,7 @@ import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieId;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 import tech.sosa.ingweb.domain.movie.MovieTitle;
+import tech.sosa.ingweb.domain.movie.Year;
 import tech.sosa.ingweb.infrastructure.persistence.InMemoryMovieRepository;
 
 public class ListAllMoviesTest {
@@ -40,14 +40,14 @@ public class ListAllMoviesTest {
 				new MovieId(1L),
 				new MovieTitle("Movie1"),
 				new Genre("Drama"),
-				new Date(2018)
+				new Year(2018)
 			);
 		
 		Movie anotherMovie = new Movie(
 				new MovieId(2L),
 				new MovieTitle("Movie2"),
 				new Genre("Thriller"),
-				new Date(2018)
+				new Year(2018)
 			);
 		
 		movieRepository.add(aMovie);

@@ -1,15 +1,13 @@
 package tech.sosa.ingweb.domain.movie;
 
-import java.util.Date;
-
 public class Movie {
 	
 	protected MovieId id;
 	protected MovieTitle title;
 	protected Genre genre;
-	protected Date year;
+	protected Year year;
 	
-	public Movie(MovieId id, MovieTitle title, Genre genre, Date year) {
+	public Movie(MovieId id, MovieTitle title, Genre genre, Year year) {
 		this.id = id;
 		this.title = title;
 		this.genre = genre;
@@ -28,8 +26,13 @@ public class Movie {
 		return new Genre(genre.toString());
 	}
 	
-	public Date year() {
-		return new Date(year.getTime());
+	public Year year() {
+		return new Year(year.value());
+	}
+
+	@Override
+	public String toString() {
+		return "Movie [id=" + id + ", title=" + title + ", genre=" + genre + ", year=" + year + "]";
 	}
 	
 }
