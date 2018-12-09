@@ -10,10 +10,10 @@ public interface MovieRepository {
 
 	public void update(Movie aMovie);
 
-	public void remove(Movie aMovie);
+	public void delete(Movie aMovie);
 
 	public Collection<Movie> all();
 
-	public Movie ofIdOrFail(MovieId expectedMovieId);
+	public Movie ofId(MovieId expectedMovieId);
 	
 }

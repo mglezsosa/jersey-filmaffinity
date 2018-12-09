@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tech.sosa.ingweb.domain.movie.Movie;
-import tech.sosa.ingweb.domain.movie.MovieDoesNotExistException;
 import tech.sosa.ingweb.domain.movie.MovieId;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 
@@ -30,14 +29,13 @@ public class InMemoryMovieRepository implements MovieRepository {
 	}
 
 	@Override
-	public void update(Movie item) {
-		// TODO Auto-generated method stub
-		
+	public void update(Movie aMovie) {
+		movies.put(aMovie.id(), aMovie);
 	}
 
 	@Override
-	public void remove(Movie item) {
-		// TODO Auto-generated method stub
+	public void delete(Movie aMovie) {
+		movies.remove(aMovie.id());
 	}
 
 	@Override
@@ -46,11 +44,8 @@ public class InMemoryMovieRepository implements MovieRepository {
 	}
 
 	@Override
-	public Movie ofIdOrFail(MovieId movieId) {
-		Movie result = movies.get(movieId);
-		if (result == null) {
-			throw new MovieDoesNotExistException();
-		}
-		return result;
+	public Movie ofId(MovieId movieId) {
+		return movies.get(movieId);
 	}
+
 }

@@ -33,7 +33,7 @@ public class AddMovieTest {
 		AddMovie addMovie = new AddMovie(movieRepository);
 		addMovie.execute(request);
 		
-		assertEquals(movieRepository.ofIdOrFail(expectedMovieId).id(), expectedMovieId);
+		assertEquals(movieRepository.ofId(expectedMovieId).id(), expectedMovieId);
 	}
 
 }

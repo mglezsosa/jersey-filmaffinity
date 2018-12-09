@@ -5,22 +5,22 @@ import tech.sosa.ingweb.domain.movie.MovieDoesNotExistException;
 import tech.sosa.ingweb.domain.movie.MovieId;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 
-public class ListMovie {
+public class DeleteMovie {
 
 	private MovieRepository movieRepository;
 
-	public ListMovie(MovieRepository movieRepository) {
+	public DeleteMovie(MovieRepository movieRepository) {
 		this.movieRepository = movieRepository;
 	}
 	
-	public Movie execute(ListMovieRequest request) {
+	public void execute(DeleteMovieRequest request) {
 		
 		Movie requestedMovie = movieRepository.ofId(new MovieId(request.id));
 		if (requestedMovie == null) {
 			throw new MovieDoesNotExistException();
 		}
 		
-		return movieRepository.ofId(requestedMovie.id());
+		movieRepository.delete(requestedMovie);
 	}
 	
 }
