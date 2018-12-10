@@ -11,6 +11,10 @@ import tech.sosa.ingweb.domain.movie.Year;
 
 public class MovieRepositoryStub {
 	
+	public static MovieRepository empty() {
+		return new InMemoryMovieRepository();
+	}
+	
 	public static MovieRepository withDummyData() {
 		
 		MovieRepository movieRepository = new InMemoryMovieRepository();

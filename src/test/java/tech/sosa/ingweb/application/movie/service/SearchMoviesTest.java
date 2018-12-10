@@ -2,6 +2,7 @@ package tech.sosa.ingweb.application.movie.service;
 
 import static org.junit.Assert.*;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -43,7 +44,7 @@ public class SearchMoviesTest {
 		SearchMoviesRequest request = new SearchMoviesRequest(
 				"lord",
 				null,
-				-1
+				null
 			);
 		
 		SearchMovies searchMovies = new SearchMovies(movieRepository);
@@ -69,7 +70,7 @@ public class SearchMoviesTest {
 		SearchMoviesRequest request = new SearchMoviesRequest(
 				null,
 				"Action",
-				-1
+				null
 			);
 		
 		SearchMovies searchMovies = new SearchMovies(movieRepository);
@@ -157,7 +158,7 @@ public class SearchMoviesTest {
 		SearchMoviesRequest request = new SearchMoviesRequest(
 				"lord",
 				"Fantasy",
-				-1
+				null
 			);
 		
 		SearchMovies searchMovies = new SearchMovies(movieRepository);
@@ -225,6 +226,21 @@ public class SearchMoviesTest {
 		Collection<Movie> actualMovies = searchMovies.execute(request);
 		
 		assertTrue(CollectionUtils.isEqualCollection(expectedMovies, actualMovies));
+	}
+	
+	@Test(expected = InvalidParameterException.class)
+	public void shouldAnExceptionBeThrownWhenQueryingWithEmptyParameters() {
+		
+		movieRepository = MovieRepositoryStub.withDummyData();
+		
+		SearchMoviesRequest request = new SearchMoviesRequest(
+				null,
+				null,
+				null
+			);
+		
+		SearchMovies searchMovies = new SearchMovies(movieRepository);
+		searchMovies.execute(request);
 	}
 
 }
