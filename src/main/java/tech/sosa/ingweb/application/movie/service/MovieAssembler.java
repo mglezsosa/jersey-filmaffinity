@@ -1,6 +1,6 @@
-package tech.sosa.ingweb.application.movie.assembler;
+package tech.sosa.ingweb.application.movie.service;
 
-import tech.sosa.ingweb.application.movie.dto.MovieDTO;
+import tech.sosa.ingweb.application.shared.Assembler;
 import tech.sosa.ingweb.domain.movie.Movie;
 
 public class MovieAssembler implements Assembler<Movie, MovieDTO> {

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
@@ -16,6 +17,31 @@ import tech.sosa.ingweb.infrastructure.persistence.director.DirectorRepositorySt
 
 public class SearchDirectorsTest {
 
+	@Test
+	public void shouldAllDirectorsBeListedIfRequestIsEmpty() {
+		
+		Director aDirector = new Director(
+				new DirectorId(1L),
+				new DirectorFullName("Peter Jackson")
+			);
+		
+		Director anotherDirector = new Director(
+				new DirectorId(2L),
+				new DirectorFullName("Quentin Tarantino")
+			);
+		
+		DirectorRepository repository = DirectorRepositoryStub.with(
+					aDirector,
+					anotherDirector
+				);
+		
+		Collection<Director> actualDirectors = new SearchDirectors(repository).execute(new SearchDirectorsRequest());
+		
+		assertEquals(Arrays.asList(
+				aDirector,
+				anotherDirector), actualDirectors);
+	}
+	
 	@Test
 	public void shouldSeveralExistingDirectorsBeFoundByPartialName() {
 		
@@ -46,18 +72,6 @@ public class SearchDirectorsTest {
 		expectedDirectors.add(anotherDirector);
 		
 		assertEquals(expectedDirectors, actualDirectors);
-	}
-	
-	@Test(expected = InvalidParameterException.class)
-	public void shouldAnExceptionBeThrownWhenQueryingWithEmptyParameters() {
-		
-		DirectorRepository repository = DirectorRepositoryStub.withDummyAndSearchable();
-		SearchDirectorsRequest request = new SearchDirectorsRequest(
-					null
-				);
-		
-		SearchDirectors searchDirectors = new SearchDirectors(repository);
-		searchDirectors.execute(request);
 	}
 
 }

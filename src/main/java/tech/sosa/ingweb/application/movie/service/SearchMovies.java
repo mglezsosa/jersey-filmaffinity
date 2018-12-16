@@ -1,6 +1,5 @@
 package tech.sosa.ingweb.application.movie.service;
 
-import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -21,9 +20,11 @@ public class SearchMovies {
 		
 		// TODO: Specification pattern for flexible queries. Maybe 'and' operator is enough.
 		// By the time, this is the provisional naive approach.
-		checkRequestIsNotEmpty(request);
-		
 		Collection<Movie> movies = movieRepository.all();
+		
+		if (request.isEmpty()) {
+			return movies;
+		}
 		
 		movies = filterMovies(request, movies);
 		
@@ -33,7 +34,7 @@ public class SearchMovies {
 	private Collection<Movie> filterMovies(SearchMoviesRequest request, Collection<Movie> movies) {
 		if (request.partialTitle != null) {
 			movies = movies.stream()
-					.filter(e -> e.title().toString().toLowerCase().contains(request.partialTitle))
+					.filter(e -> e.title().toString().toLowerCase().contains(request.partialTitle.toLowerCase()))
 					.collect(Collectors.toList());
 		}
 		if (request.genre != null) {
@@ -48,12 +49,5 @@ public class SearchMovies {
 		}
 		return movies;
 	}
-
-	private void checkRequestIsNotEmpty(SearchMoviesRequest request) {
-		if (request.partialTitle == null &&
-			request.genre        == null &&
-			request.year         == null) {
-			throw new InvalidParameterException("At least one parameter must be setted.");
-		}
-	}
+	
 }

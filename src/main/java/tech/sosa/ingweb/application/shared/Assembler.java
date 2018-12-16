@@ -1,4 +1,4 @@
-package tech.sosa.ingweb.application.movie.assembler;
+package tech.sosa.ingweb.application.shared;
 
 public interface Assembler<T, TDTO> {
 

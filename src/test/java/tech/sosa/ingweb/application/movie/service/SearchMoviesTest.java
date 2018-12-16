@@ -1,16 +1,15 @@
 package tech.sosa.ingweb.application.movie.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.junit.Test;
 
-import tech.sosa.ingweb.application.movie.service.SearchMovies;
-import tech.sosa.ingweb.application.movie.service.SearchMoviesRequest;
 import tech.sosa.ingweb.domain.movie.Genre;
 import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieId;
@@ -21,12 +20,71 @@ import tech.sosa.ingweb.infrastructure.persistence.movie.MovieRepositoryStub;
 
 public class SearchMoviesTest {
 	
-	private MovieRepository movieRepository;
-	
-	private void populateRepository(Movie... movies) {
-		movieRepository = MovieRepositoryStub.withDummyAndSearchable(movies);
+	@Test
+	public void shouldAllMoviesBeListedIfRequestIsEmpty() {
+		
+		Movie searchableMovie1 = new Movie(
+				new MovieId(10L),
+				new MovieTitle("Lord of the rings: The Two Towers"),
+				new Genre("Fantasy"),
+				new Year(2002)
+			);
+		
+		Movie searchableMovie2 = new Movie(
+				new MovieId(14L),
+				new MovieTitle("The Lord of the Rings: The Fellowship of the Ring"),
+				new Genre("Fantasy"),
+				new Year(2001)
+			);
+		
+		Movie searchableMovie3 = new Movie(
+				new MovieId(15L),
+				new MovieTitle("The Lord of the Rings: The Return of the King"),
+				new Genre("Fantasy"),
+				new Year(2003)
+			);
+		
+		MovieRepository repository = MovieRepositoryStub.with(
+				searchableMovie1, 
+				searchableMovie2, 
+				searchableMovie3);
+		
+		SearchMoviesRequest request = new SearchMoviesRequest();
+		
+		Collection<Movie> allMovies = new SearchMovies(repository).execute(request);
+		
+		
+		assertEquals(Arrays.asList(searchableMovie1, 
+				searchableMovie2, 
+				searchableMovie3), allMovies);
 	}
 
+	@Test
+	public void shouldAnExistingMovieBeFoundByFullTitle() {
+		
+		Movie searchableMovie = new Movie(
+				new MovieId(10L),
+				new MovieTitle("Lord of the rings: The Two Towers"),
+				new Genre("Fantasy"),
+				new Year(2002)
+			);
+		
+		MovieRepository repository = MovieRepositoryStub.withDummyAndSearchable(searchableMovie);
+		
+		Collection<Movie> expectedMovies = Arrays.asList(searchableMovie);
+		
+		SearchMoviesRequest request = new SearchMoviesRequest(
+				"Lord of the rings: The Two Towers",
+				null,
+				null
+			);
+		
+		SearchMovies searchMovies = new SearchMovies(repository);
+		Collection<Movie> actualMovies = searchMovies.execute(request);
+		
+		assertEquals(expectedMovies, actualMovies);
+	}
+	
 	@Test
 	public void shouldAnExistingMovieBeFoundByPartialTitle() {
 		
@@ -37,7 +95,7 @@ public class SearchMoviesTest {
 				new Year(2002)
 			);
 		
-		populateRepository(searchableMovie);
+		MovieRepository repository = MovieRepositoryStub.withDummyAndSearchable(searchableMovie);
 		Collection<Movie> expectedMovies = new ArrayList<>();
 		expectedMovies.add(searchableMovie);
 		
@@ -47,7 +105,7 @@ public class SearchMoviesTest {
 				null
 			);
 		
-		SearchMovies searchMovies = new SearchMovies(movieRepository);
+		SearchMovies searchMovies = new SearchMovies(repository);
 		Collection<Movie> actualMovies = searchMovies.execute(request);
 		
 		assertEquals(expectedMovies, actualMovies);
@@ -63,9 +121,8 @@ public class SearchMoviesTest {
 				new Year(2018)
 			);
 		
-		populateRepository(searchableMovie);
-		Collection<Movie> expectedMovies = new ArrayList<>();
-		expectedMovies.add(searchableMovie);
+		MovieRepository repository = MovieRepositoryStub.withDummyAndSearchable(searchableMovie);
+		Collection<Movie> expectedMovies = Arrays.asList(searchableMovie);
 		
 		SearchMoviesRequest request = new SearchMoviesRequest(
 				null,
@@ -73,7 +130,7 @@ public class SearchMoviesTest {
 				null
 			);
 		
-		SearchMovies searchMovies = new SearchMovies(movieRepository);
+		SearchMovies searchMovies = new SearchMovies(repository);
 		Collection<Movie> actualMovies = searchMovies.execute(request);
 		
 		assertEquals(expectedMovies, actualMovies);
@@ -89,7 +146,7 @@ public class SearchMoviesTest {
 				new Year(1963)
 			);
 		
-		populateRepository(searchableMovie);
+		MovieRepository repository = MovieRepositoryStub.withDummyAndSearchable(searchableMovie);
 		Collection<Movie> expectedMovies = new ArrayList<>();
 		expectedMovies.add(searchableMovie);
 		
@@ -99,7 +156,7 @@ public class SearchMoviesTest {
 				1963
 			);
 		
-		SearchMovies searchMovies = new SearchMovies(movieRepository);
+		SearchMovies searchMovies = new SearchMovies(repository);
 		Collection<Movie> actualMovies = searchMovies.execute(request);
 		
 		assertEquals(expectedMovies, actualMovies);
@@ -142,7 +199,7 @@ public class SearchMoviesTest {
 				new Year(2003)
 			);
 		
-		populateRepository(
+		MovieRepository repository = MovieRepositoryStub.withDummyAndSearchable(
 				searchableMovie1,
 				searchableMovie2,
 				searchableMovie3,
@@ -161,7 +218,7 @@ public class SearchMoviesTest {
 				null
 			);
 		
-		SearchMovies searchMovies = new SearchMovies(movieRepository);
+		SearchMovies searchMovies = new SearchMovies(repository);
 		Collection<Movie> actualMovies = searchMovies.execute(request);
 		
 		assertEquals(expectedMovies, actualMovies);
@@ -204,7 +261,7 @@ public class SearchMoviesTest {
 				new Year(2001)
 			);
 		
-		populateRepository(
+		MovieRepository repository = MovieRepositoryStub.withDummyAndSearchable(
 				searchableMovie1,
 				searchableMovie2,
 				searchableMovie3,
@@ -222,25 +279,10 @@ public class SearchMoviesTest {
 				2018
 			);
 		
-		SearchMovies searchMovies = new SearchMovies(movieRepository);
+		SearchMovies searchMovies = new SearchMovies(repository);
 		Collection<Movie> actualMovies = searchMovies.execute(request);
 		
 		assertTrue(CollectionUtils.isEqualCollection(expectedMovies, actualMovies));
-	}
-	
-	@Test(expected = InvalidParameterException.class)
-	public void shouldAnExceptionBeThrownWhenQueryingWithEmptyParameters() {
-		
-		movieRepository = MovieRepositoryStub.withDummyData();
-		
-		SearchMoviesRequest request = new SearchMoviesRequest(
-				null,
-				null,
-				null
-			);
-		
-		SearchMovies searchMovies = new SearchMovies(movieRepository);
-		searchMovies.execute(request);
 	}
 
 }

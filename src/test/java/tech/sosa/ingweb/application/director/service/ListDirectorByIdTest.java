@@ -39,7 +39,7 @@ public class ListDirectorByIdTest {
 	}
 	
 	@Test(expected = DirectorDoesNotExistException.class)
-	public void shouldANonExistingMovieNotBeFoundAndAnExceptionBeThrown() {
+	public void shouldANonExistingDirectorNotBeFoundAndAnExceptionBeThrown() {
 		
 		DirectorRepository directorRepository = DirectorRepositoryStub.with(
 				new Director(

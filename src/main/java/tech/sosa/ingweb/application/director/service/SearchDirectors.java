@@ -1,6 +1,5 @@
 package tech.sosa.ingweb.application.director.service;
 
-import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -17,9 +16,9 @@ public class SearchDirectors {
 	
 	public Collection<Director> execute(SearchDirectorsRequest request) {
 		
-		checkRequestIsNotEmpty(request);
-		
 		Collection<Director> directors = repository.all();
+		
+		if (request.isEmpty()) return directors;
 		
 		directors = filterDirectors(request, directors);
 		
@@ -27,18 +26,10 @@ public class SearchDirectors {
 	}
 
 	private Collection<Director> filterDirectors(SearchDirectorsRequest request, Collection<Director> directors) {
-		if(request.partialName != null) {
-			directors = directors.stream()
-					.filter(d -> d.fullName().toString().contains(request.partialName))
-					.collect(Collectors.toList());
-		}
-		return directors;
-	}
-
-	private void checkRequestIsNotEmpty(SearchDirectorsRequest request) {
-		if(request.partialName == null) {
-			throw new InvalidParameterException("At least one parameter must be setted.");
-		}
+		
+		return directors.stream()
+				.filter(d -> d.fullName().toString().contains(request.partialName))
+				.collect(Collectors.toList());
 	}
 	
 }

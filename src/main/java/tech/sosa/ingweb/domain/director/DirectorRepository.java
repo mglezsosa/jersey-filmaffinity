@@ -15,4 +15,5 @@ public interface DirectorRepository {
 	public Collection<Director> all();
 
 	public Director ofId(DirectorId expectedMovieId);
+	
 }

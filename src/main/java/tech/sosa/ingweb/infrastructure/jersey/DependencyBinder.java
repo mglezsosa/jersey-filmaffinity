@@ -2,7 +2,7 @@ package tech.sosa.ingweb.infrastructure.jersey;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
-import tech.sosa.ingweb.application.movie.assembler.MovieAssembler;
+import tech.sosa.ingweb.application.movie.service.MovieAssembler;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 import tech.sosa.ingweb.infrastructure.persistence.movie.MovieRepositoryStub;
 

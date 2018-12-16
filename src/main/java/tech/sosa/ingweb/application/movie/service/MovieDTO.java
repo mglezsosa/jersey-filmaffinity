@@ -1,4 +1,4 @@
-package tech.sosa.ingweb.application.movie.dto;
+package tech.sosa.ingweb.application.movie.service;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
