@@ -1,7 +1,12 @@
 package tech.sosa.ingweb.application.director.service;
 
+import javax.ws.rs.QueryParam;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class SearchDirectorsRequest {
 
+	@QueryParam("name_portion")
 	public String partialName;
 
 	public SearchDirectorsRequest(String partialName) {

@@ -1,8 +1,7 @@
 package tech.sosa.ingweb.application.director.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;

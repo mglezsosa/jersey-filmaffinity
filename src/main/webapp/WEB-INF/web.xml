@@ -15,7 +15,11 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
+	<servlet>
+	     <servlet-name>SwaggerBootstrap</servlet-name>
+	     <servlet-class>tech.sosa.ingweb.infrastructure.swagger.SwaggerConf</servlet-class>
+	       <load-on-startup>2</load-on-startup>
+	</servlet>
 	<servlet-mapping>
 		<servlet-name>api-rest</servlet-name>
 		<url-pattern>/api/*</url-pattern>

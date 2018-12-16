@@ -1,7 +1,12 @@
 package tech.sosa.ingweb.application.actor.service;
 
+import javax.ws.rs.QueryParam;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class SearchActorsRequest {
 	
+	@QueryParam("name_portion")
 	public String partialName;
 
 	public SearchActorsRequest(String partialFullName) {

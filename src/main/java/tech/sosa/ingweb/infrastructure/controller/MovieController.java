@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 
 import javax.inject.Inject;
-import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +16,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiParam;
 import tech.sosa.ingweb.application.movie.service.AddMovie;
 import tech.sosa.ingweb.application.movie.service.AddMovieRequest;
 import tech.sosa.ingweb.application.movie.service.DeleteMovie;
@@ -33,6 +34,7 @@ import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 
 @Path("/movies")
+@Api(value = "movies")
 public class MovieController {
 	
 	private MovieRepository movieRepository;
@@ -47,14 +49,14 @@ public class MovieController {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public MovieDTO getMovieById(@PathParam("id") final int id) {
+	public MovieDTO getMovieById(@ApiParam(value = "Unique identifier of the movie.", required = true) @PathParam("id") final int id) {
 		Movie requestedMovie = new ListMovie(movieRepository).execute(new ListMovieRequest(id));
 		return assembler.toDTO(requestedMovie);
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<MovieDTO> searchMovies(@BeanParam final SearchMoviesRequest request) {
+	public Collection<MovieDTO> searchMovies(final SearchMoviesRequest request) {
 		Collection<Movie> requestedMovies = new SearchMovies(movieRepository).execute(request);
 		return requestedMovies.stream().map(assembler::toDTO).collect(toList());
 	}
