@@ -4,6 +4,7 @@ import java.util.Collection;
 import static java.util.stream.Collectors.toList;
 
 import javax.inject.Inject;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -58,7 +59,7 @@ public class ActorController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<ActorDTO> searchActors(final SearchActorsRequest request) {
+	public Collection<ActorDTO> searchActors(@BeanParam final SearchActorsRequest request) {
 		Collection<Actor> requestedActors = new SearchActors(actorRepository).execute(request);
 		return requestedActors.stream().map(assembler::toDTO).collect(toList());
 	}
@@ -80,7 +81,6 @@ public class ActorController {
 	}
 	
 	@PUT
-	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateActor(final UpdateActorRequest request) {

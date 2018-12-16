@@ -1,12 +1,10 @@
 package tech.sosa.ingweb.application.director.service;
 
-import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class UpdateDirectorRequest {
 
-	@PathParam("id")
 	public long id;
 	
 	public String fullName;

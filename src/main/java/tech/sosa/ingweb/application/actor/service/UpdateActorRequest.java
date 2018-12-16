@@ -1,10 +1,7 @@
 package tech.sosa.ingweb.application.actor.service;
 
-import javax.ws.rs.PathParam;
-
 public class UpdateActorRequest {
 
-	@PathParam("id")
 	public long id;
 	public String fullName;
 	

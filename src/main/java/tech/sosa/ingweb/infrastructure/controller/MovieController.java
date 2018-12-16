@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -56,7 +57,7 @@ public class MovieController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<MovieDTO> searchMovies(final SearchMoviesRequest request) {
+	public Collection<MovieDTO> searchMovies(@BeanParam final SearchMoviesRequest request) {
 		Collection<Movie> requestedMovies = new SearchMovies(movieRepository).execute(request);
 		return requestedMovies.stream().map(assembler::toDTO).collect(toList());
 	}
@@ -78,7 +79,6 @@ public class MovieController {
 	}
 	
 	@PUT
-	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateMovie(final UpdateMovieRequest request) {

@@ -48,7 +48,7 @@ public class SearchMoviesRequest {
 		this.year = year;
 	}
 
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		if (
 			(partialTitle == null || partialTitle == "") &&
 			(genre == null || genre == "") &&

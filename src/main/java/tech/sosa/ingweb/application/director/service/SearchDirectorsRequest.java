@@ -29,7 +29,7 @@ public class SearchDirectorsRequest {
 		return "SearchDirectorsRequest [partialName=" + partialName + "]";
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		if (partialName == null || partialName == "") return true;
 		return false;
 	}

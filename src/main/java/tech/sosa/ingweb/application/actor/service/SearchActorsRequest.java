@@ -3,10 +3,13 @@ package tech.sosa.ingweb.application.actor.service;
 import javax.ws.rs.QueryParam;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import io.swagger.annotations.ApiParam;
+
 @XmlRootElement
 public class SearchActorsRequest {
 	
 	@QueryParam("name_portion")
+	@ApiParam(value = "Part of the name which to search for.")
 	public String partialName;
 
 	public SearchActorsRequest(String partialFullName) {
@@ -29,7 +32,7 @@ public class SearchActorsRequest {
 		return "SearchActorsRequest [partialName=" + partialName + "]";
 	}
 	
-	public boolean isEmpty() {
+	boolean isEmpty() {
 		if (partialName == null || partialName == "") {
 			return true;
 		}

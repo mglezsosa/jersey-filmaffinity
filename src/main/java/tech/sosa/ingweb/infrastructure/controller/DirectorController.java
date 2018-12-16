@@ -4,6 +4,7 @@ import java.util.Collection;
 import static java.util.stream.Collectors.toList;
 
 import javax.inject.Inject;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -57,7 +58,7 @@ public class DirectorController {
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<DirectorDTO> searchDirectors(final SearchDirectorsRequest request) {
+	public Collection<DirectorDTO> searchDirectors(@BeanParam final SearchDirectorsRequest request) {
 		Collection<Director> requestedDirectors = new SearchDirectors(repository).execute(request);
 		return requestedDirectors.stream().map(assembler::toDTO).collect(toList());
 	}
@@ -79,7 +80,6 @@ public class DirectorController {
 	}
 	
 	@PUT
-	@Path("/{id}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updateDirector(final UpdateDirectorRequest request) {

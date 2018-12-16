@@ -1,16 +1,16 @@
 package tech.sosa.ingweb.application.movie.service;
 
-import javax.ws.rs.PathParam;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class UpdateMovieRequest {
 	
-	@PathParam("id")
-	public Long id;
+	public long id;
 	
 	public String title;
+	
 	public String genre;
+	
 	public int year;
 	
 	public UpdateMovieRequest(Long id, String title, String genre, int year) {
