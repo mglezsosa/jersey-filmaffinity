@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import static java.util.stream.Collectors.toList;
 
+import tech.sosa.ingweb.domain.actor.Actor;
+import tech.sosa.ingweb.domain.director.Director;
 import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieId;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
@@ -16,7 +19,7 @@ public class InMemoryMovieRepository implements MovieRepository {
 	public InMemoryMovieRepository() {
 		movies = new HashMap<MovieId, Movie>();
 	}
-	
+
 	@Override
 	public MovieId nextIdentity() {
 		Long newIdentityValue = Long.valueOf(movies.size() + 1);
@@ -46,6 +49,16 @@ public class InMemoryMovieRepository implements MovieRepository {
 	@Override
 	public Movie ofId(MovieId movieId) {
 		return movies.get(movieId);
+	}
+
+	@Override
+	public Collection<Movie> ofDirector(Director director) {
+		return movies.values().stream().filter(m -> m.getDirector().equals(director)).collect(toList());
+	}
+
+	@Override
+	public Collection<Movie> ofActor(Actor actor) {
+		return movies.values().stream().filter(m -> m.getActors().contains(actor)).collect(toList());
 	}
 
 }

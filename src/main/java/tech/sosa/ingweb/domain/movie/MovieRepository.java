@@ -2,6 +2,9 @@ package tech.sosa.ingweb.domain.movie;
 
 import java.util.Collection;
 
+import tech.sosa.ingweb.domain.actor.Actor;
+import tech.sosa.ingweb.domain.director.Director;
+
 public interface MovieRepository {
 	
 	public MovieId nextIdentity();
@@ -15,5 +18,9 @@ public interface MovieRepository {
 	public Collection<Movie> all();
 
 	public Movie ofId(MovieId expectedMovieId);
+
+	public Collection<Movie> ofDirector(Director director);
+	
+	public Collection<Movie> ofActor(Actor actor);
 	
 }

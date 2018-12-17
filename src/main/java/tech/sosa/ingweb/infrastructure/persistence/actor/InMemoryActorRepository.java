@@ -8,13 +8,24 @@ import java.util.Map;
 import tech.sosa.ingweb.domain.actor.Actor;
 import tech.sosa.ingweb.domain.actor.ActorId;
 import tech.sosa.ingweb.domain.actor.ActorRepository;
+import tech.sosa.ingweb.domain.movie.MovieRepository;
 
 public class InMemoryActorRepository implements ActorRepository {
 	
 	private Map<ActorId, Actor> actors;
+	private MovieRepository movieRepo;
 
 	public InMemoryActorRepository() {
 		this.actors = new HashMap<>();
+	}
+	
+	public InMemoryActorRepository(MovieRepository movieRepo) {
+		super();
+		this.movieRepo = movieRepo;
+	}
+	
+	public void setMovieRepository(MovieRepository repository) {
+		movieRepo = repository;
 	}
 
 	@Override
@@ -36,6 +47,14 @@ public class InMemoryActorRepository implements ActorRepository {
 	@Override
 	public void delete(Actor anActor) {
 		actors.remove(anActor.id());
+		updateMovies(anActor);
+	}
+
+	private void updateMovies(Actor anActor) {
+		if (movieRepo == null) return;
+		movieRepo.all().stream()
+		.filter(m -> m.getActors().contains(anActor))
+		.forEach(m -> m.unassignActor(anActor));
 	}
 
 	@Override
