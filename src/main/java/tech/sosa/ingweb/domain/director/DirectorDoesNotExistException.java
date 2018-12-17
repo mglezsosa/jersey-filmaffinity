@@ -1,6 +1,8 @@
 package tech.sosa.ingweb.domain.director;
 
-public class DirectorDoesNotExistException extends RuntimeException {
+import tech.sosa.ingweb.domain.shared.ResourceDoesNotExistException;
+
+public class DirectorDoesNotExistException extends ResourceDoesNotExistException {
 
 	/**
 	 * 
@@ -26,6 +28,11 @@ public class DirectorDoesNotExistException extends RuntimeException {
 	public DirectorDoesNotExistException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+	@Override
+	public String defaultMessage() {
+		return "Director was not found.";
 	}
 
 }

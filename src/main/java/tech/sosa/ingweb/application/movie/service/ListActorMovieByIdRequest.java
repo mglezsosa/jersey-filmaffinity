@@ -1,8 +1,13 @@
 package tech.sosa.ingweb.application.movie.service;
 
+import javax.ws.rs.PathParam;
+
 public class ListActorMovieByIdRequest {
 
+	@PathParam("actorId")
 	public long actorId;
+	
+	@PathParam("movieId")
 	public long movieId;
 	
 	public ListActorMovieByIdRequest(long actorId, long movieId) {

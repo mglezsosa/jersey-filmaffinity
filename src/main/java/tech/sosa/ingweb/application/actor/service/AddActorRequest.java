@@ -7,5 +7,8 @@ public class AddActorRequest {
 	public AddActorRequest(String fullName) {
 		this.fullName = fullName;
 	}
+
+	public AddActorRequest() {
+	}
 	
 }

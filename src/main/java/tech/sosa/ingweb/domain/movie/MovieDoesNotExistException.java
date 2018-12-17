@@ -1,8 +1,8 @@
 package tech.sosa.ingweb.domain.movie;
 
-import tech.sosa.ingweb.domain.shared.DoesNotExistException;
+import tech.sosa.ingweb.domain.shared.ResourceDoesNotExistException;
 
-public class MovieDoesNotExistException extends DoesNotExistException {
+public class MovieDoesNotExistException extends ResourceDoesNotExistException {
 
 	/**
 	 * 
@@ -27,6 +27,11 @@ public class MovieDoesNotExistException extends DoesNotExistException {
 	public MovieDoesNotExistException(String message, Throwable cause, boolean enableSuppression,
 			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
+	}
+
+	@Override
+	public String defaultMessage() {
+		return "Movie was not found.";
 	}
 
 }

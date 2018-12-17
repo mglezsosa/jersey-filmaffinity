@@ -1,7 +1,8 @@
 package tech.sosa.ingweb.infrastructure.controller;
 
-import java.util.Collection;
 import static java.util.stream.Collectors.toList;
+
+import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
@@ -30,8 +31,16 @@ import tech.sosa.ingweb.application.actor.service.SearchActors;
 import tech.sosa.ingweb.application.actor.service.SearchActorsRequest;
 import tech.sosa.ingweb.application.actor.service.UpdateActor;
 import tech.sosa.ingweb.application.actor.service.UpdateActorRequest;
+import tech.sosa.ingweb.application.movie.service.ListActorMovieById;
+import tech.sosa.ingweb.application.movie.service.ListActorMovieByIdRequest;
+import tech.sosa.ingweb.application.movie.service.ListActorMovies;
+import tech.sosa.ingweb.application.movie.service.ListActorMoviesRequest;
+import tech.sosa.ingweb.application.movie.service.MovieAssembler;
+import tech.sosa.ingweb.application.movie.service.MovieDTO;
 import tech.sosa.ingweb.domain.actor.Actor;
 import tech.sosa.ingweb.domain.actor.ActorRepository;
+import tech.sosa.ingweb.domain.movie.Movie;
+import tech.sosa.ingweb.domain.movie.MovieRepository;
 
 
 @Path("/actors")
@@ -39,29 +48,33 @@ import tech.sosa.ingweb.domain.actor.ActorRepository;
 public class ActorController {
 
 	private ActorRepository actorRepository;
-	private ActorAssembler assembler;
+	private MovieRepository movieRepository;
+	private ActorAssembler actorAssembler;
+	private MovieAssembler movieAssembler;
 	
 	@Inject
-	public ActorController(ActorRepository actorRepository, ActorAssembler assembler) {
+	public ActorController(ActorRepository actorRepository, MovieRepository movieRepository,
+			ActorAssembler actorAssembler, MovieAssembler movieAssembler) {
 		this.actorRepository = actorRepository;
-		this.assembler = assembler;
+		this.movieRepository = movieRepository;
+		this.actorAssembler = actorAssembler;
+		this.movieAssembler = movieAssembler;
 	}
 	
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public ActorDTO getActorById(
-			@ApiParam(value = "Unique identifier of the actor.", required = true) 
-			@PathParam("id") final int id) {
+			@ApiParam(value = "Unique identifier of the actor.", required = true) @PathParam("id") final long id) {
 		Actor requestedActor = new ListActorById(actorRepository).execute(new ListActorByIdRequest(id));
-		return assembler.toDTO(requestedActor);
+		return actorAssembler.toDTO(requestedActor);
 	}
 	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<ActorDTO> searchActors(@BeanParam final SearchActorsRequest request) {
 		Collection<Actor> requestedActors = new SearchActors(actorRepository).execute(request);
-		return requestedActors.stream().map(assembler::toDTO).collect(toList());
+		return requestedActors.stream().map(actorAssembler::toDTO).collect(toList());
 	}
 	
 	@POST
@@ -75,8 +88,8 @@ public class ActorController {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteActor(final DeleteActorRequest request) {
-		new DeleteActor(actorRepository).execute(request);
+	public Response deleteActor(@PathParam("id") final long id) {
+		new DeleteActor(actorRepository).execute(new DeleteActorRequest(id));
 		return Response.ok().build();
 	}
 	
@@ -87,4 +100,26 @@ public class ActorController {
 		new UpdateActor(actorRepository).execute(request);
 		return Response.ok().build();
 	}
+	
+	@GET
+	@Path("/{id}/movies")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<MovieDTO> getActorMovies(@PathParam("id") final long id) {
+		Collection<Movie> requestedMovies = new ListActorMovies(movieRepository, actorRepository)
+				.execute(new ListActorMoviesRequest(id));
+		return requestedMovies.stream().map(movieAssembler::toDTO).collect(toList());
+	}
+	
+	@GET
+	@Path("/{actorId}/movies/{movieId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public MovieDTO getActorMovieByid(
+			@PathParam("actorId") final long actorId, 
+			@PathParam("movieId") final long movieId) {
+		
+		Movie requestedMovie = new ListActorMovieById(movieRepository, actorRepository)
+				.execute(new ListActorMovieByIdRequest(actorId, movieId));
+		return movieAssembler.toDTO(requestedMovie);
+	}
+	
 }

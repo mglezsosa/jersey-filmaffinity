@@ -25,8 +25,8 @@ public class UnassignDirector {
 			throw new MovieDoesNotExistException();
 		}
 		
-		Director directorToAssign = directorRepository.ofId(new DirectorId(request.directorId));
-		if (directorToAssign == null) {
+		Director directorToUnassign = directorRepository.ofId(new DirectorId(request.directorId));
+		if (directorToUnassign == null) {
 			throw new DirectorDoesNotExistException();
 		}
 		

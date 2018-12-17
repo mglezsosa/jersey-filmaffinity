@@ -1,6 +1,8 @@
 package tech.sosa.ingweb.domain.actor;
 
-public class ActorDoesNotExistException extends RuntimeException {
+import tech.sosa.ingweb.domain.shared.ResourceDoesNotExistException;
+
+public class ActorDoesNotExistException extends ResourceDoesNotExistException {
 
 	/**
 	 * 
@@ -31,6 +33,11 @@ public class ActorDoesNotExistException extends RuntimeException {
 	public ActorDoesNotExistException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public String defaultMessage() {
+		return "Actor was not found.";
 	}
 
 }
