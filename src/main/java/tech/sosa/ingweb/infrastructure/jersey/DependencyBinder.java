@@ -16,7 +16,9 @@ import tech.sosa.ingweb.domain.director.DirectorRepository;
 import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
 import tech.sosa.ingweb.infrastructure.persistence.actor.ActorRepositoryStub;
+import tech.sosa.ingweb.infrastructure.persistence.actor.InMemoryActorRepository;
 import tech.sosa.ingweb.infrastructure.persistence.director.DirectorRepositoryStub;
+import tech.sosa.ingweb.infrastructure.persistence.director.InMemoryDirectorRepository;
 import tech.sosa.ingweb.infrastructure.persistence.movie.MovieRepositoryStub;
 
 public class DependencyBinder extends AbstractBinder {
@@ -26,8 +28,11 @@ public class DependencyBinder extends AbstractBinder {
 		System.out.println("Loading binder...");
 		
 		MovieRepository movieRepository = MovieRepositoryStub.withDummyData();
-		ActorRepository actorRepository = ActorRepositoryStub.withDummyData();
-		DirectorRepository directorRepository = DirectorRepositoryStub.withDummyData();
+		InMemoryActorRepository actorRepository = (InMemoryActorRepository) ActorRepositoryStub.withDummyData();
+		InMemoryDirectorRepository directorRepository = (InMemoryDirectorRepository) DirectorRepositoryStub.withDummyData();
+		
+		directorRepository.setMovieRepository(movieRepository);
+		actorRepository.setMovieRepository(movieRepository);
 		
 		List<Director> directors = new ArrayList<>(directorRepository.all());
 		List<Actor> actors = new ArrayList<>(actorRepository.all());
