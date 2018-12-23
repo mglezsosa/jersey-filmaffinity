@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import tech.sosa.ingweb.domain.director.Director;
 import tech.sosa.ingweb.domain.director.DirectorId;
@@ -65,6 +66,18 @@ public class InMemoryDirectorRepository implements DirectorRepository {
 	@Override
 	public Director ofId(DirectorId directorId) {
 		return directors.get(directorId);
+	}
+
+	@Override
+	public Collection<Director> ofSpecs(String partialName) {
+		return filterDirectors(partialName, all());
+	}
+	
+	private Collection<Director> filterDirectors(String partialName, Collection<Director> directors) {
+		
+		return directors.stream()
+				.filter(d -> d.fullName().toString().contains(partialName))
+				.collect(Collectors.toList());
 	}
 
 }

@@ -1,25 +1,20 @@
 package tech.sosa.ingweb.infrastructure.jersey;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 
 import tech.sosa.ingweb.application.actor.service.ActorAssembler;
 import tech.sosa.ingweb.application.director.service.DirectorAssembler;
 import tech.sosa.ingweb.application.movie.service.MovieAssembler;
-import tech.sosa.ingweb.domain.actor.Actor;
 import tech.sosa.ingweb.domain.actor.ActorRepository;
-import tech.sosa.ingweb.domain.director.Director;
 import tech.sosa.ingweb.domain.director.DirectorRepository;
-import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
-import tech.sosa.ingweb.infrastructure.persistence.actor.ActorRepositoryStub;
-import tech.sosa.ingweb.infrastructure.persistence.actor.InMemoryActorRepository;
-import tech.sosa.ingweb.infrastructure.persistence.director.DirectorRepositoryStub;
-import tech.sosa.ingweb.infrastructure.persistence.director.InMemoryDirectorRepository;
-import tech.sosa.ingweb.infrastructure.persistence.movie.MovieRepositoryStub;
+import tech.sosa.ingweb.infrastructure.persistence.actor.MySQLActorRepository;
+import tech.sosa.ingweb.infrastructure.persistence.director.MySQLDirectorRepository;
+import tech.sosa.ingweb.infrastructure.persistence.movie.MySQLMovieRepository;
 
 public class DependencyBinder extends AbstractBinder {
 
@@ -27,26 +22,25 @@ public class DependencyBinder extends AbstractBinder {
 	protected void configure() {
 		System.out.println("Loading binder...");
 		
-		MovieRepository movieRepository = MovieRepositoryStub.withDummyData();
-		InMemoryActorRepository actorRepository = (InMemoryActorRepository) ActorRepositoryStub.withDummyData();
-		InMemoryDirectorRepository directorRepository = (InMemoryDirectorRepository) DirectorRepositoryStub.withDummyData();
+		System.out.println(System.getenv("FILMAFFINITY_DB_URL"));
+		System.out.println(System.getenv("FILMAFFINITY_DB_USER"));
+		System.out.println(System.getenv("FILMAFFINITY_DB_PASS"));
 		
-		directorRepository.setMovieRepository(movieRepository);
-		actorRepository.setMovieRepository(movieRepository);
+		Connection connection;
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			connection = DriverManager.getConnection(
+				System.getenv("FILMAFFINITY_DB_URL"),
+				System.getenv("FILMAFFINITY_DB_USER"),
+				System.getenv("FILMAFFINITY_DB_PASS")
+			);
+		} catch (SQLException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 		
-		List<Director> directors = new ArrayList<>(directorRepository.all());
-		List<Actor> actors = new ArrayList<>(actorRepository.all());
-		List<Movie> movies = new ArrayList<>(movieRepository.all());
-		
-		Random rand = new Random();
-		
-		movies.stream().forEach(m -> {
-			m.assignDirector(directors.get(rand.nextInt(directors.size())));
-			m.assignActor(actors.get(rand.nextInt(actors.size())));
-			m.assignActor(actors.get(rand.nextInt(actors.size())));
-			m.assignActor(actors.get(rand.nextInt(actors.size())));
-			movieRepository.update(m);
-		});
+		MovieRepository movieRepository = new MySQLMovieRepository(connection);
+		ActorRepository actorRepository = new MySQLActorRepository(connection);
+		DirectorRepository directorRepository = new MySQLDirectorRepository(connection);
 		
 		bind(movieRepository).to(MovieRepository.class);
 		bind(actorRepository).to(ActorRepository.class);

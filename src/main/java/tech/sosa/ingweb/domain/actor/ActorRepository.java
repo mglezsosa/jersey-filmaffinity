@@ -16,4 +16,5 @@ public interface ActorRepository {
 
 	public Actor ofId(ActorId expectedActorId);
 	
+	public Collection<Actor> ofSpecs(String partialName);
 }

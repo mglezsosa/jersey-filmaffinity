@@ -4,4 +4,6 @@ public interface Assembler<T, TDTO> {
 
 	public TDTO toDTO(T entity);
 	
+	public T toEntity(TDTO dto);
+	
 }

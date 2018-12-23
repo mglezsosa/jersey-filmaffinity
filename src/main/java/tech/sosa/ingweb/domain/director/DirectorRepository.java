@@ -16,4 +16,5 @@ public interface DirectorRepository {
 
 	public Director ofId(DirectorId expectedMovieId);
 	
+	public Collection<Director> ofSpecs(String partialName);
 }

@@ -23,4 +23,6 @@ public interface MovieRepository {
 	
 	public Collection<Movie> ofActor(Actor actor);
 	
+	public Collection<Movie> ofSpecs(String partialTitle, Genre genre, Year year);
+	
 }

@@ -1,16 +1,20 @@
 package tech.sosa.ingweb.infrastructure.persistence.movie;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import static java.util.stream.Collectors.toList;
+import java.util.stream.Collectors;
 
 import tech.sosa.ingweb.domain.actor.Actor;
 import tech.sosa.ingweb.domain.director.Director;
+import tech.sosa.ingweb.domain.movie.Genre;
 import tech.sosa.ingweb.domain.movie.Movie;
 import tech.sosa.ingweb.domain.movie.MovieId;
 import tech.sosa.ingweb.domain.movie.MovieRepository;
+import tech.sosa.ingweb.domain.movie.Year;
 
 public class InMemoryMovieRepository implements MovieRepository {
 
@@ -61,4 +65,30 @@ public class InMemoryMovieRepository implements MovieRepository {
 		return movies.values().stream().filter(m -> m.getActors().contains(actor)).collect(toList());
 	}
 
+	@Override
+	public Collection<Movie> ofSpecs(String partialTitle, Genre genre, Year year) {
+		Collection<Movie> movies = all();
+		
+		return filterMovies(partialTitle, genre, year, movies);
+	}
+	
+	private Collection<Movie> filterMovies(String partialTitle, Genre genre, Year year, Collection<Movie> movies) {
+		if (partialTitle != null) {
+			movies = movies.stream()
+					.filter(e -> e.title().toString().toLowerCase().contains(partialTitle.toLowerCase()))
+					.collect(Collectors.toList());
+		}
+		if (genre != null) {
+			movies = movies.stream()
+					.filter(e -> e.genre().equals(genre))
+					.collect(Collectors.toList());
+		}
+		if (year != null) {
+			movies = movies.stream()
+					.filter(e -> e.year().equals(year))
+					.collect(Collectors.toList());
+		}
+		return movies;
+	}
+	
 }

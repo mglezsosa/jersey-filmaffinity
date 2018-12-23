@@ -1,0 +1,23 @@
+version: '3'
+services:
+  mysql:
+    build: 
+      context: .
+      dockerfile: ./mysql-Dockerfile
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "3306:3306"
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  web:
+    image: tomcat
+    ports: 
+      - "8080:8080"
+    env_file:
+     - ./example.env
+    volumes:
+      - ../target/java-web-service.war:/usr/local/tomcat/webapps/jersey-filmaffinity.war
+      - ../target/java-web-service:/usr/local/tomcat/webapps/jersey-filmaffinity
+    depends_on:
+      - mysql

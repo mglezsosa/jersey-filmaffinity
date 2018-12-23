@@ -1,5 +1,7 @@
 package tech.sosa.ingweb.infrastructure.persistence.actor;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -65,6 +67,17 @@ public class InMemoryActorRepository implements ActorRepository {
 	@Override
 	public Actor ofId(ActorId expectedActorId) {
 		return actors.get(expectedActorId);
+	}
+
+	@Override
+	public Collection<Actor> ofSpecs(String partialName) {
+		return filterActors(partialName, all());
+	}
+	
+	private Collection<Actor> filterActors(String partialName, Collection<Actor> actors) {
+		return actors.stream()
+				.filter(a -> a.fullName().toString().toLowerCase().contains(partialName.toLowerCase()))
+				.collect(toList());
 	}
 
 }
