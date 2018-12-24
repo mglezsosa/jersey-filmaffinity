@@ -4,8 +4,19 @@ This is the repository for the REST API with Jersey assignment.
 
  - The default name of the project is `jersey-filmaffinity`.
  - Swagger UI shows on the root path. Endpoint documentation is displayed there.
- - For the moment, the project is using a in-memory repository for data persistence. No SQL DBMSs support, but easily extensible.
- - At startup, repositories are populated with some random dummy data.
+ - It has support for a volatile in memory database and a MySQL database.
+
+## Usage
+
+The application uses the following environment variables as shown in `docker/example.env` for the MySQL connection:
+
+```
+FILMAFFINITY_DB_URL=jdbc:mysql://mysql:3306/mglezsosa-filmaffinity
+FILMAFFINITY_DB_USER=root
+FILMAFFINITY_DB_PASS=
+```
+
+A `docker-compose.yml` file is provided for setting up in docker. You may run `sh run-docker.sh` to start the containers. Thus, the database initializes and populates executing `schema.sql` and `populate.sql`.
 
 ## License
 
